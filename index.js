@@ -5,25 +5,25 @@ require('dotenv').config()
 const express = require("express");
 const app=express();
 
+const client=new Client();
+
+client.on('qr',(qr)=>{
+    qrcode.generate(qr,{small:true})
+})
+
+client.on('ready',()=>{
+    console.log('client ready')
+})
+
+client.initialize();
+
+const configuration=new Configuration({
+    apiKey:process.env.SECRET_KEY,
+})
+
+const openai=new OpenAIApi(configuration)
+
 async function hello(){
-
-    const client=new Client();
-
-    client.on('qr',(qr)=>{
-        qrcode.generate(qr,{small:true})
-    })
-
-    client.on('ready',()=>{
-        console.log('client ready')
-    })
-
-    client.initialize();
-
-    const configuration=new Configuration({
-        apiKey:process.env.SECRET_KEY,
-    })
-
-    const openai=new OpenAIApi(configuration)
 
     async function runcompile(message){
         const completion=await openai.createCompletion({
