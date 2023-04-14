@@ -5,7 +5,9 @@ require('dotenv').config();
 const express = require("express");
 const app = express();
 
-const client = new Client();
+const client = new Client({
+    session: JSON.parse(process.env.WHATSAPP_SESSION)
+});
 
 client.on('qr', (qr) => {
     qrcode.generate(qr, { small: true });
